@@ -2,6 +2,8 @@ package com.dsnyder.homesthatwork;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Bukkit;
@@ -12,20 +14,14 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 
+import com.dsnyder.homesthatwork.permissions.PermissionManager;
+
 public class HomeManager {
 	
 	public static final String LAST_LOCATION		= "__last";
 	
 	public static final String PERMISSION_MAX_HOMES = "homesthatwork.homes.max.";
-	public static final String PERMISSION_SET_HOMES = "homesthatwork.home.set";
-	public static final String PERMISSION_HOME      = "homesthatwork.home.use";
-	public static final String PERMISSION_DEL_HOMES = "homesthatwork.home.del";
-	public static final String PERMISSION_LIST_HOMES = "homesthatwork.home.list";
-	public static final String PERMISSION_HOME_INFO = "homesthatwork.home.info";
-	public static final String PERMISSION_LIST_OTHER = "homesthatwork.others.list";
-	public static final String PERMISSION_OTHER_INFO = "homesthatwork.others.info";
 	public static final String PERMISSION_DIMENSIONS = "homesthatwork.otherdimensions";
-	public static final String PERMISSION_LAST		= "homesthatwork.goback";
 	public static final int    DEFAULT_MAX_HOMES = 10;
 	
 	private YamlConfiguration config;
@@ -35,7 +31,7 @@ public class HomeManager {
 	
 	public HomeManager(OfflinePlayer pl) {
 		// Create/open player config file
-		playerconf = new File(WorkingHomes.main.getDataFolder() + File.separator + pl.getUniqueId() + ".yml");
+		playerconf = new File(WorkingHomes.getPlugin().getDataFolder() + File.separator + pl.getUniqueId() + ".yml");
 		config = YamlConfiguration.loadConfiguration(playerconf);
 		
 		if (pl.isOnline()) player = pl.getPlayer();
@@ -58,12 +54,6 @@ public class HomeManager {
 	}
 	
 	public void setHome(String home) {
-		
-		if (!hasPermission(PERMISSION_SET_HOMES)) {
-			// check permission
-			player.sendMessage(ChatColor.RED + "You do not have permission to set homes");
-			return;
-		}
 		// ensure this player can create more homes
 		if (curHomeCount >= getMaxHomes()) {
 			// we check for greater than in case their max homes changed
@@ -86,12 +76,6 @@ public class HomeManager {
 	}
 	
 	public void goHome(String home) {
-		
-		if (!hasPermission(PERMISSION_HOME)) {
-			// check permission
-			player.sendMessage(ChatColor.RED + "You do not have permission to use homes");
-			return;
-		}
 		// if they have too many homes, then their permissions have changed
 		// let them choose which homes they lose
 		if (curHomeCount > getMaxHomes()) {
@@ -114,7 +98,7 @@ public class HomeManager {
 		}
 		
 		if (!loc.getWorld().equals(player.getWorld())) {
-			if (!hasPermission(PERMISSION_DIMENSIONS)) {
+			if (!PermissionManager.getManager().hasPermission(player, PERMISSION_DIMENSIONS)) {
 				player.sendMessage(ChatColor.RED + "You do not have permission for interdimensional homes");
 				return;
 			}
@@ -125,12 +109,6 @@ public class HomeManager {
 	}
 	
 	public void delHome(String home) {
-		
-		if (!hasPermission(PERMISSION_DEL_HOMES)) {
-			// check permission
-			player.sendMessage(ChatColor.RED + "You do not have permission to delete homes");
-			return;
-		}
 		// only reason you can't delete a home is if it doesn't exist
 		if (!homeExists(home.toLowerCase())) {
 			player.sendMessage(ChatColor.RED + "Home does not exist");
@@ -151,48 +129,22 @@ public class HomeManager {
 	}
 	
 	public void listHomes() {
-		if (!hasPermission(PERMISSION_LIST_HOMES)) {
-			// check permission
-			player.sendMessage(ChatColor.RED + "You do not have permission to view homes");
-			return;
-		}
 		player.sendMessage(generateHomeList());
 	}
 	
 	public void listHomes(OfflinePlayer other) {
-		if (!hasPermission(PERMISSION_LIST_OTHER)) {
-			// check permission
-			
-			player.sendMessage(ChatColor.RED + "You do not have permission to view other players' homes");
-			return;
-		}
 		player.sendMessage(new HomeManager(other).generateHomeList());
 	}
 	
 	public void homeInfo(String home) {
-		if (!hasPermission(PERMISSION_HOME_INFO)) {
-			player.sendMessage(ChatColor.RED + "You do not have permission to view home info");
-			return;
-		}
-		
 		player.sendMessage(generateHomeInfo(home));
 	}
 	
 	public void homeInfo(OfflinePlayer other, String home) {
-		if (!hasPermission(PERMISSION_OTHER_INFO)) {
-			player.sendMessage(ChatColor.RED + "You do not have permission to view info of other players homes");
-			return;
-		}
-		
 		player.sendMessage(new HomeManager(other).generateHomeInfo(home));
 	}
 	
 	public void goBack() {
-		
-		if (!hasPermission(PERMISSION_LAST)) {
-			player.sendMessage(ChatColor.RED + "You do not have permission to go back");
-			return;
-		}
 		
 		if (!homeExists(LAST_LOCATION)) {
 			player.sendMessage(ChatColor.RED + "No previous location recorded!");
@@ -200,6 +152,14 @@ public class HomeManager {
 		}
 		
 		goHome(LAST_LOCATION);
+	}
+	
+	public List<String> getHomeList() {
+		List<String> homes = new ArrayList<String>();
+		homes.addAll(config.getKeys(false));
+		homes.remove(WorkingHomes.VERSION_KEY);
+		homes.remove(LAST_LOCATION);
+		return homes;
 	}
 	
 	@SuppressWarnings("unused")
@@ -263,22 +223,6 @@ public class HomeManager {
 			player.sendMessage(msg);
 			return false;
 		}
-	}
-	
-	private boolean hasPermission(String permission) {
-		
-		if (player.isOp()) return true;
-		// scan through the players permissions to check for a max home count
-		for (PermissionAttachmentInfo p : player.getEffectivePermissions()) {
-			String name = p.getPermission().toLowerCase();
-			// general permission - see if the prefix matches the current prefix
-			if (name.endsWith("*") && permission.startsWith(name.substring(0, name.length()-1)))
-				return true;
-			// specific permission - check for equality
-			if (name.equalsIgnoreCase(permission)) return true;
-		}
-		
-		return false;
 	}
 	
 	private int getMaxHomes() {
