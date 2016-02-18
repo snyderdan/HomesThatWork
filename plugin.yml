@@ -1,0 +1,27 @@
+name: HomesThatWork
+main: com.dsnyder.homesthatwork.WorkingHomes
+version: 2.0.1
+author: Dan Snyder
+description: A simple home plugin that actually works
+commands:
+  sethome:
+    description: Sets players current position to home name specified
+    usage: /sethome <home_name>
+  home:
+    description: Takes user to pre-defined home specified
+    usage: /home <home_name>
+  delhome:
+    description: Remove specified home
+    usage: /delhome <home_name>
+  listhomes:
+    description: List homes of specified player
+    usage: /listhomes [player]
+  homeinfo:
+    description: Display information on a specific home
+    usage: /homeinfo [player] <home_name>
+  goback:
+    description: Go back to the last location you were before your last /home command
+    usage: /goback
+  htwversion:
+    description: Display version of HomesThatWork
+    usage: /htwversion
