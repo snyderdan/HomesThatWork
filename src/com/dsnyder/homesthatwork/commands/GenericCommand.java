@@ -49,12 +49,22 @@ public abstract class GenericCommand implements TabExecutor {
 		return ChatColor.GOLD + "/" + getName() + ": " + ChatColor.WHITE + 
 				getDescription() + "\n" + ChatColor.GOLD + "Usage: " + ChatColor.WHITE + getUsage();
 	}
+	
+	public void initializeHomeManager(CommandSender sender) {
+		
+		homeManager = null;
+		
+		if (!(sender instanceof Player)) return;
+		
+		homeManager = new HomeManager((OfflinePlayer) sender);
+	}
+	
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
-		if (!(sender instanceof Player)) return false;
+		initializeHomeManager(sender);
 		
-		homeManager = new HomeManager((OfflinePlayer) sender);
+		if (homeManager == null) return false;
 		
 		if (permission == null || PermissionManager.getManager().hasPermission(sender, getPermission())) {
 			return execute(sender, args);

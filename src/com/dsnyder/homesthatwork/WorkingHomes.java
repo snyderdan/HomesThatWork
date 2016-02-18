@@ -3,6 +3,7 @@ package com.dsnyder.homesthatwork;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.dsnyder.homesthatwork.commands.*;
+import com.dsnyder.homesthatwork.permissions.PermissionManager;
 
 public class WorkingHomes extends JavaPlugin {
 	
@@ -14,12 +15,12 @@ public class WorkingHomes extends JavaPlugin {
 	@Override
 	public void onEnable() {
 		main = this;
+		new PermissionManager();
 		new CommandManager();
 	}
 	
 	@Override
 	public void onDisable() {
-		
 	}
 	
 	public static JavaPlugin getPlugin() {

@@ -16,17 +16,18 @@ public class CommandManager {
 		// TODO Auto-generated constructor stub
 		commands = new ArrayList<>();
 		manager = this;
-		JavaPlugin plugin = WorkingHomes.getPlugin();
-		plugin.getCommand("home").setExecutor(new HomeCommand());
-		plugin.getCommand("delhome").setExecutor(new DelHomeCommand());
-		plugin.getCommand("sethome").setExecutor(new SetHomeCommand());
-		plugin.getCommand("listhome").setExecutor(new ListHomesCommand());
-		plugin.getCommand("homeinfo").setExecutor(new HomeInfoCommand());
-		plugin.getCommand("goback").setExecutor(new GoBackCommand());
-		plugin.getCommand("homesthatwork").setExecutor(new HTWCommand());
+		registerCommand(new HomeCommand());
+		registerCommand(new DelHomeCommand());
+		registerCommand(new SetHomeCommand());
+		registerCommand(new ListHomesCommand());
+		registerCommand(new HomeInfoCommand());
+		registerCommand(new GoBackCommand());
+		registerCommand(new HTWCommand());
 	}
 	
 	public void registerCommand(GenericCommand cmd) {
+		JavaPlugin plugin = WorkingHomes.getPlugin();
+		plugin.getCommand(cmd.getName()).setExecutor(cmd);
 		commands.add(cmd);
 	}
 	

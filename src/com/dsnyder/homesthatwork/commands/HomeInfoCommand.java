@@ -1,5 +1,6 @@
 package com.dsnyder.homesthatwork.commands;
 
+import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -8,6 +9,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
+import com.dsnyder.homesthatwork.HomeManager;
 import com.dsnyder.homesthatwork.permissions.PermissionManager;
 
 public class HomeInfoCommand extends GenericCommand {
@@ -20,7 +22,52 @@ public class HomeInfoCommand extends GenericCommand {
 	@Override
 	public List<String> onTabComplete(CommandSender arg0, Command arg1, String arg2, String[] arg3) {
 		// TODO Auto-generated method stub
-		return null;
+		initializeHomeManager(arg0);
+		if (homeManager == null) return null;
+		
+		List<String> homes = homeManager.getHomeList();
+		
+		Collections.sort(homes);
+		
+		if (arg3.length == 0) {
+
+		} else if (arg3.length == 1) {
+			for (String home : homeManager.getHomeList()) {
+				if (!home.toLowerCase().startsWith(arg3[0].toLowerCase())) {
+					homes.remove(home);
+				}
+			}
+			
+			if (homes.isEmpty()) return null;
+
+		} else if (arg3.length == 2 &&
+				PermissionManager.getManager().hasPermission(arg0, "homesthatwork.others.info")) {
+			
+			for (OfflinePlayer p : Bukkit.getOfflinePlayers()) {
+				if (p.getName().equalsIgnoreCase(arg3[0])) {
+					if (!p.isOnline())
+						arg0.sendMessage(ChatColor.YELLOW + "Offline: Last known player named " + arg3[0]);
+					
+					HomeManager other = new HomeManager(p);
+					
+					homes = other.getHomeList();
+					Collections.sort(homes);
+
+					for (String home : other.getHomeList()) {
+						if (!home.toLowerCase().startsWith(arg3[0].toLowerCase())) {
+							homes.remove(home);
+						}
+					}
+					
+					if (homes.isEmpty()) return null;
+					break;
+				}
+			}
+		} else {
+			return null;
+		}
+		
+		return homes;
 	}
 	
 	@Override
@@ -39,7 +86,8 @@ public class HomeInfoCommand extends GenericCommand {
     		else {
     			for (OfflinePlayer p : Bukkit.getOfflinePlayers()) {
     				if (p.getName().equalsIgnoreCase(args[0])) {
-    					sender.sendMessage(ChatColor.YELLOW + "Offline: Last known player named " + args[0]);
+    					if (!p.isOnline())
+    						sender.sendMessage(ChatColor.YELLOW + "Offline: Last known player named " + args[0]);
     					homeManager.homeInfo(p, args[1]);
     					return true;
     				}

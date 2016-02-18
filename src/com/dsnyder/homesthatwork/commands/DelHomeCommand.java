@@ -16,6 +16,9 @@ public class DelHomeCommand extends GenericCommand {
 	@Override
 	public List<String> onTabComplete(CommandSender arg0, Command arg1, String arg2, String[] arg3) {
 		// TODO Auto-generated method stub
+		initializeHomeManager(arg0);
+		if (homeManager == null) return null;
+		
 		List<String> homes = homeManager.getHomeList();
 		
 		Collections.sort(homes);
@@ -23,7 +26,7 @@ public class DelHomeCommand extends GenericCommand {
 		if (arg3.length == 0) return homes;
 
 		if (arg3.length == 1) {
-			for (String home : homes) {
+			for (String home : homeManager.getHomeList()) {
 				if (!home.toLowerCase().startsWith(arg3[0].toLowerCase())) {
 					homes.remove(home);
 				}
