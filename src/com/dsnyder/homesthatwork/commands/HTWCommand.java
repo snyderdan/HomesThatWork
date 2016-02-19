@@ -12,7 +12,7 @@ import com.dsnyder.homesthatwork.WorkingHomes;
 public class HTWCommand extends GenericCommand {
 
 	public HTWCommand() {
-		super("homesthatwork", "Main plugin command. See /htw help for command list.", "/htw", "homesthatwork.command.main");
+		super("homesthatwork", "Main plugin command. See /htw help for command list.", "/htw [version | help [command]]", "homesthatwork.command.main");
 		// TODO Auto-generated constructor stub
 	}
 
@@ -26,13 +26,31 @@ public class HTWCommand extends GenericCommand {
 		if (arg3.length == 0) return list;
 		
 		if (arg3.length == 1) {
-			for (String cmd : list) {
-				if (!cmd.toLowerCase().startsWith(arg3[0].toLowerCase())) {
-					list.remove(cmd);
+			if (arg3[0].equalsIgnoreCase("help")) {
+				list = new ArrayList<>();
+				for (GenericCommand cmd : CommandManager.getManager().getCommands()) {
+					list.add(cmd.getName());
+				}
+			} else {
+				for (String cmd : list) {
+					if (!cmd.toLowerCase().startsWith(arg3[1].toLowerCase())) {
+						list.remove(cmd);
+					}
 				}
 			}
 			
 			return list;
+		} else if (arg3.length == 2 && arg3[1].equalsIgnoreCase("help")) {
+			list = new ArrayList<>();
+			for (GenericCommand cmd : CommandManager.getManager().getCommands()) {
+				list.add(cmd.getName());
+			}
+			
+			for (String cmd : list) {
+				if (!cmd.toLowerCase().startsWith(arg3[2].toLowerCase())) {
+					list.remove(cmd);
+				}
+			}
 		}
 			
 		return null;
@@ -49,7 +67,7 @@ public class HTWCommand extends GenericCommand {
 			
 			if (args.length == 1) {
 				for (GenericCommand cmd : CommandManager.getManager().getCommands()) {
-					help += cmd.getHelp() + "\n";
+					help += cmd.getHelp() + "\n\n";
 				}
 			} else if (args.length == 2) {
 				for (GenericCommand cmd : CommandManager.getManager().getCommands()) {

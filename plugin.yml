@@ -6,17 +6,17 @@ description: A simple home plugin that actually works
 commands:
   homesthatwork:
     description: Main plugin command. See /htw help for command list.
-    usage: /homesthatwork [version | [help] [subcommand]]
+    usage: /homesthatwork [version | help [command]]
     aliases: [htw]
   home:
-    description: NA
+    description: See /htw help home
   sethome:
-    description: NA
+    description: See /htw help sethome
   delhome:
-    description: NA
+    description: See /htw help delhome
   listhomes:
-    description: NA
+    description: See /htw help listhomes
   homeinfo:
-    description: NA
+    description: See /htw help homeinfo
   goback:
-    description: NA
+    description: See /htw help goback

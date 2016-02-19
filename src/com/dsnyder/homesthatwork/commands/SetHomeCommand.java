@@ -21,7 +21,9 @@ public class SetHomeCommand extends GenericCommand {
 	@Override
 	protected boolean execute(CommandSender sender, String[] args) {
 		// TODO Auto-generated method stub
-		return false;
+		if (args.length != 1) return false;
+		homeManager.setHome(args[0]);
+		return true;
 	}
 
 }

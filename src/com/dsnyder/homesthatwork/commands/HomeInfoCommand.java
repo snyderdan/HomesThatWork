@@ -29,20 +29,10 @@ public class HomeInfoCommand extends GenericCommand {
 		
 		Collections.sort(homes);
 		
-		if (arg3.length == 0) {
-
-		} else if (arg3.length == 1) {
-			for (String home : homeManager.getHomeList()) {
-				if (!home.toLowerCase().startsWith(arg3[0].toLowerCase())) {
-					homes.remove(home);
-				}
-			}
-			
-			if (homes.isEmpty()) return null;
-
-		} else if (arg3.length == 2 &&
-				PermissionManager.getManager().hasPermission(arg0, "homesthatwork.others.info")) {
-			
+		if (arg3.length == 0) return homes;
+		
+		if (PermissionManager.getManager().hasPermission(arg0, "homesthatwork.others.info")) {
+			// any access to other player homes?
 			for (OfflinePlayer p : Bukkit.getOfflinePlayers()) {
 				if (p.getName().equalsIgnoreCase(arg3[0])) {
 					if (!p.isOnline())
@@ -52,17 +42,28 @@ public class HomeInfoCommand extends GenericCommand {
 					
 					homes = other.getHomeList();
 					Collections.sort(homes);
-
-					for (String home : other.getHomeList()) {
-						if (!home.toLowerCase().startsWith(arg3[0].toLowerCase())) {
-							homes.remove(home);
+					
+					if (arg3.length == 2) {
+						for (String home : other.getHomeList()) {
+							if (!home.toLowerCase().startsWith(arg3[1].toLowerCase())) {
+								homes.remove(home);
+							}
 						}
 					}
-					
-					if (homes.isEmpty()) return null;
-					break;
+					return homes;
 				}
 			}
+		}
+
+		if (arg3.length == 1) {
+			for (String home : homeManager.getHomeList()) {
+				if (!home.toLowerCase().startsWith(arg3[0].toLowerCase())) {
+					homes.remove(home);
+				}
+			}
+			
+			if (homes.isEmpty()) return null;
+
 		} else {
 			return null;
 		}
