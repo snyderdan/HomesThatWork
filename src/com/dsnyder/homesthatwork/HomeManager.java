@@ -19,6 +19,7 @@ import com.dsnyder.homesthatwork.permissions.PermissionManager;
 public class HomeManager {
 	
 	public static final String LAST_LOCATION		= "__last";
+	public static final String DEFAULT_LOCATION     = "default";
 	
 	public static final String PERMISSION_MAX_HOMES = "homesthatwork.homes.max.";
 	public static final String PERMISSION_DIMENSIONS = "homesthatwork.otherdimensions";
@@ -84,6 +85,7 @@ public class HomeManager {
 					"Too many homes set. You must delete %d home%s", hCount, (hCount > 1) ? "s" : ""));
 			return;
 		}
+
 		// 
 		if (!homeExists(home)) {
 			player.sendMessage(ChatColor.RED + "Home does not exist");
@@ -195,7 +197,12 @@ public class HomeManager {
 		Location loc = parseLocation((String) config.get(home.toLowerCase()));
 		
 		return String.format(
-				"%s:\n  World: %s\n  X: %.2f Y: %.2f Z: %.2f",
+				ChatColor.LIGHT_PURPLE + "" + ChatColor.UNDERLINE + "%s:\n" +
+				ChatColor.RESET + "" + ChatColor.LIGHT_PURPLE +
+				"  World: " + ChatColor.AQUA + " %10s\n" + ChatColor.LIGHT_PURPLE +
+						"  X:       " + ChatColor.AQUA + "%10.2f\n" + ChatColor.LIGHT_PURPLE +
+						"  Y:       " + ChatColor.AQUA + "%10.2f\n" + ChatColor.LIGHT_PURPLE +
+						"  Z:       " + ChatColor.AQUA + "%10.2f\n" ,
 				home, loc.getWorld().getName(), loc.getX(), loc.getY(), loc.getZ());
 	}
 	
@@ -207,7 +214,7 @@ public class HomeManager {
 		
 		if (homes.isEmpty()) return "No homes set";
 		
-		String homestr = "Homes: ";
+		String homestr = ChatColor.LIGHT_PURPLE + "Homes: \n" + ChatColor.WHITE;
 		for (String home : homes) homestr += home + ", ";
 		// substring is to remove the last comma in the list
 		return homestr.substring(0, homestr.length()-2);

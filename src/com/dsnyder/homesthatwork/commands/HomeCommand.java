@@ -3,13 +3,14 @@ package com.dsnyder.homesthatwork.commands;
 import java.util.Collections;
 import java.util.List;
 
+import com.dsnyder.homesthatwork.HomeManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 public class HomeCommand extends GenericCommand {
 
 	public HomeCommand() {
-		super("home", "Teleport to a specified home point", "/home <home_name>", "homesthatwork.home.use");
+		super("home", "Teleport to a specified home point", "/home [home_name]", "homesthatwork.home.use");
 		// TODO Auto-generated constructor stub
 	}
 
@@ -41,6 +42,7 @@ public class HomeCommand extends GenericCommand {
 	@Override
 	protected boolean execute(CommandSender sender, String[] args) {
 		// TODO Auto-generated method stub
+		if (args.length == 0) args = new String[] {HomeManager.DEFAULT_LOCATION};
 		if (args.length != 1) return false;
 		homeManager.goHome(args[0]);
 		return true;

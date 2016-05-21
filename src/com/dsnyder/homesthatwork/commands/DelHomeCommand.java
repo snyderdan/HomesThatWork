@@ -3,6 +3,7 @@ package com.dsnyder.homesthatwork.commands;
 import java.util.Collections;
 import java.util.List;
 
+import com.dsnyder.homesthatwork.HomeManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
@@ -41,6 +42,7 @@ public class DelHomeCommand extends GenericCommand {
 	@Override
 	protected boolean execute(CommandSender sender, String[] args) {
 		// TODO Auto-generated method stub
+		if (args.length == 0) args = new String[] {HomeManager.DEFAULT_LOCATION};
 		if (args.length != 1) return false;
 		homeManager.delHome(args[0]);
 		return true;

@@ -8,7 +8,7 @@ import com.dsnyder.homesthatwork.permissions.PermissionManager;
 public class WorkingHomes extends JavaPlugin {
 	
 	public static final String VERSION_KEY		= "HTWVersion";
-	public static final String CURRENT_VERSION	= "2.1.0";
+	public static final String CURRENT_VERSION	= "2.2.0";
 	
 	private static JavaPlugin main;
 	
