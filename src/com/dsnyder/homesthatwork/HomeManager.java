@@ -14,7 +14,8 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.PermissionAttachmentInfo;
 
-import com.dsnyder.homesthatwork.permissions.PermissionManager;
+import com.dsnyder.homesthatwork.permissions	.PermissionManager;
+
 
 public class HomeManager {
 	
@@ -23,8 +24,8 @@ public class HomeManager {
 	
 	public static final String PERMISSION_MAX_HOMES = "homesthatwork.homes.max.";
 	public static final String PERMISSION_DIMENSIONS = "homesthatwork.otherdimensions";
-	public static final int    DEFAULT_MAX_HOMES = 10;
-	
+	public static final int DEFAULT_MAX_HOMES = 10;
+
 	private YamlConfiguration config;
 	private File playerconf;
 	private Player player;
@@ -32,9 +33,11 @@ public class HomeManager {
 	
 	public HomeManager(OfflinePlayer pl) {
 		// Create/open player config file
-		playerconf = new File(WorkingHomes.getPlugin().getDataFolder() + File.separator + pl.getUniqueId() + ".yml");
-		config = YamlConfiguration.loadConfiguration(playerconf);
-		
+
+
+		this.config = FileManager.getHomeConf( pl );
+		playerconf = new File(WorkingHomes.getPlugin().getDataFolder() + "/home_data/", pl.getUniqueId() + ".yml");
+
 		if (pl.isOnline()) player = pl.getPlayer();
 		
 		if (!checkVersionCompatibility()) {
@@ -42,16 +45,16 @@ public class HomeManager {
 		}
 		
 		// get the number of homes this player has (1 key = 1 home)
-		if (config.getKeys(false).contains(LAST_LOCATION))
+		if (this.config.getKeys(false).contains(LAST_LOCATION))
 			// subtract 2 -- 1 for version key and 1 for last location
-			curHomeCount = config.getKeys(false).size() - 2;
+			curHomeCount = this.config.getKeys(false).size() - 2;
 		else
 			// only subtract 1 for version key
-			curHomeCount = config.getKeys(false).size() - 1;
+			curHomeCount = this.config.getKeys(false).size() - 1;
 	}
 	
 	public boolean homeExists(String home) {
-		return config.contains(home.toLowerCase());
+		return this.config.contains(home.toLowerCase());
 	}
 	
 	public void setHome(String home) {
@@ -59,20 +62,20 @@ public class HomeManager {
 		if (curHomeCount >= getMaxHomes()) {
 			// we check for greater than in case their max homes changed
 			// we do not delete the homes however -- they can choose which homes go
-			player.sendMessage(ChatColor.RED + "Maxmium number of homes set.");
+			player.sendMessage( MessageManager.getPfx() + ChatColor.RED + MessageManager.getMsg( "max-homes-set" ) );
 			return;
 		}
 		
 		if (homeExists(home)) {
-			player.sendMessage(ChatColor.RED + "Home already exists");
+			player.sendMessage( MessageManager.getPfx() + ChatColor.RED + MessageManager.getMsg( "home-exists" ) );
 			return;
 		}
 		// attempt to set the home and save the configuration file
-		config.set(home.toLowerCase(), locationToString(player.getLocation()));
+		this.config.set(home.toLowerCase(), locationToString(player.getLocation()));
 		
-		if (!saveHomes(ChatColor.RED + "Unable to save home - contact an administrator")) return;
+		if (!FileManager.saveHomes( (MessageManager.getPfx() + ChatColor.RED + MessageManager.getMsg( "sethome-error" )), player) ) return;
 		// send message that it was successful
-		player.sendMessage("Home successfully set");
+		player.sendMessage( MessageManager.getPfx() + ChatColor.GREEN + MessageManager.getMsg( "home-set" ));
 		curHomeCount++;
 	}
 	
@@ -81,52 +84,52 @@ public class HomeManager {
 		// let them choose which homes they lose
 		if (curHomeCount > getMaxHomes()) {
 			int hCount = curHomeCount - getMaxHomes();
-			player.sendMessage(String.format(ChatColor.RED + 
-					"Too many homes set. You must delete %d home%s", hCount, (hCount > 1) ? "s" : ""));
+			player.sendMessage(String.format(MessageManager.getPfx() + ChatColor.RED +
+					MessageManager.getMsg("too-many-homes"), hCount, (hCount > 1) ? "s" : ""));
 			return;
+
 		}
 
 		// 
 		if (!homeExists(home)) {
-			player.sendMessage(ChatColor.RED + "Home does not exist");
+			player.sendMessage( MessageManager.getPfx() + ChatColor.RED + MessageManager.getMsg( "does-not-exist" ));
 			return;
 		}
 		// parse values accordingly
 		Location loc = parseLocation((String) config.get(home.toLowerCase()));
 		// go to the specified location
 		if (loc == null) {
-			player.sendMessage(ChatColor.RED + "Home data corrupted - contact an admin");
+			player.sendMessage(MessageManager.getPfx() + ChatColor.RED + MessageManager.getMsg( "corrupt-data" ));
 			return;
 		}
 		
 		if (!loc.getWorld().equals(player.getWorld())) {
 			if (!PermissionManager.getManager().hasPermission(player, PERMISSION_DIMENSIONS)) {
-				player.sendMessage(ChatColor.RED + "You do not have permission for interdimensional homes");
+				player.sendMessage(MessageManager.getPfx() + ChatColor.RED + MessageManager.getMsg( "no-inter-perm" ));
 				return;
 			}
 		}
-		config.set(LAST_LOCATION, locationToString(player.getLocation()));
-		saveHomes(ChatColor.RED + "Unable to save last location - please contact an administrator");
+		this.config.set(LAST_LOCATION, locationToString(player.getLocation()));
+		FileManager.saveHomes(MessageManager.getPfx() + ChatColor.RED + MessageManager.getMsg( "loc-save-error" ), player);
 		player.teleport(loc);
 	}
 	
 	public void delHome(String home) {
 		// only reason you can't delete a home is if it doesn't exist
 		if (!homeExists(home.toLowerCase())) {
-			player.sendMessage(ChatColor.RED + "Home does not exist");
+			player.sendMessage(MessageManager.getPfx() + ChatColor.RED + MessageManager.getMsg( "does-not-exist" ));
 			return;
 		}
 		
 		try {
 			// remove home - should work every time
-			config.set(home, null);
-			config.save(playerconf);
-			player.sendMessage("Home successfully removed");
+			this.config.set(home, null);
+			this.config.save(playerconf);
+			player.sendMessage(MessageManager.getPfx() + ChatColor.RED + MessageManager.getMsg( "home-removed" ));
 			curHomeCount--;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-			player.sendMessage(ChatColor.RED + "An internal error has occured");
+			player.sendMessage(MessageManager.getPfx() + ChatColor.RED + MessageManager.getMsg( "home-rem-error"));
 		}
 	}
 	
@@ -149,7 +152,7 @@ public class HomeManager {
 	public void goBack() {
 		
 		if (!homeExists(LAST_LOCATION)) {
-			player.sendMessage(ChatColor.RED + "No previous location recorded!");
+			player.sendMessage(MessageManager.getPfx() + ChatColor.RED + MessageManager.getMsg( "no-prev-loc" ));
 			return;
 		}
 		
@@ -157,8 +160,8 @@ public class HomeManager {
 	}
 	
 	public List<String> getHomeList() {
-		List<String> homes = new ArrayList<String>();
-		homes.addAll(config.getKeys(false));
+		List<String> homes = new ArrayList<>();
+		homes.addAll(this.config.getKeys(false));
 		homes.remove(WorkingHomes.VERSION_KEY);
 		homes.remove(LAST_LOCATION);
 		return homes;
@@ -167,22 +170,22 @@ public class HomeManager {
 	@SuppressWarnings("unused")
 	private boolean checkVersionCompatibility() {
 		// If the they are up to date, then don't do anything
-		if (config.contains(WorkingHomes.VERSION_KEY) && config.get(WorkingHomes.VERSION_KEY).equals(WorkingHomes.CURRENT_VERSION)) 
+		if (this.config.contains(WorkingHomes.VERSION_KEY) && this.config.get(WorkingHomes.VERSION_KEY).equals(WorkingHomes.CURRENT_VERSION))
 			return true;
 		
-		if (!config.contains(WorkingHomes.VERSION_KEY)) {
+		if (!this.config.contains(WorkingHomes.VERSION_KEY)) {
 			// Version 1.0.0 to Version 1.0.1 - fixing case sensitivity
-			for (String key : config.getKeys(false)) {
-				String value = (String) config.get(key);
-				config.set(key, null); // should remove the key from the config
-				config.set(key.toLowerCase(), value); // add the value with all lowercase key
+			for (String key : this.config.getKeys(false)) {
+				String value = (String) this.config.get(key);
+				this.config.set(key, null); // should remove the key from the config
+				this.config.set(key.toLowerCase(), value); // add the value with all lowercase key
 			}
-		} else if (false) {
+		} else if(false) {
 			// Version 1.0.1 to Version X.X.X
 		}
 		
-		config.set(WorkingHomes.VERSION_KEY, WorkingHomes.CURRENT_VERSION);
-		return saveHomes(ChatColor.RED + "WARNING: An error occurred during version conversion. Please contact an administrator.");
+		this.config.set(WorkingHomes.VERSION_KEY, WorkingHomes.CURRENT_VERSION);
+		return FileManager.saveHomes(( MessageManager.getPfx() + ChatColor.RED + "WARNING: An error occurred during version conversion. Please contact an administrator." ), player  );
 	}
 	
 	public int comparePlayer(Player pl) {
@@ -192,9 +195,9 @@ public class HomeManager {
 	
 	private String generateHomeInfo(String home) {
 		
-		if (!homeExists(home)) return ChatColor.RED + "Home does not exist";
+		if (!homeExists(home)) return ( MessageManager.getPfx() + ChatColor.RED + MessageManager.getMsg( "does-not-exist" ) );
 		
-		Location loc = parseLocation((String) config.get(home.toLowerCase()));
+		Location loc = parseLocation((String) this.config.get(home.toLowerCase()));
 		
 		return String.format(
 				ChatColor.LIGHT_PURPLE + "" + ChatColor.UNDERLINE + "%s:\n" +
@@ -208,28 +211,16 @@ public class HomeManager {
 	
 	private String generateHomeList() {
 		
-		Set<String> homes = config.getKeys(false);
+		Set<String> homes = this.config.getKeys(false);
 		homes.remove(LAST_LOCATION);
 		homes.remove(WorkingHomes.VERSION_KEY);
 		
-		if (homes.isEmpty()) return "No homes set";
+		if (homes.isEmpty()) return ( MessageManager.getPfx() + ChatColor.RED + MessageManager.getMsg( "no-homes-set") );
 		
 		String homestr = ChatColor.LIGHT_PURPLE + "Homes: \n" + ChatColor.WHITE;
 		for (String home : homes) homestr += home + ", ";
 		// substring is to remove the last comma in the list
 		return homestr.substring(0, homestr.length()-2);
-	}
-	
-	private boolean saveHomes(String msg) {
-		try {
-			config.save(playerconf);
-			return true;
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			player.sendMessage(msg);
-			return false;
-		}
 	}
 	
 	private int getMaxHomes() {

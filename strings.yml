@@ -1,0 +1,40 @@
+# HomesThatWork Custom Messages File
+messages:
+    prefix: "&7[&cHomesThatWork&7]"
+    player-errors:
+        max-homes-set:  "Maxmium number of homes set."
+        home-already-exists: "Home already exists."
+
+        # %d --> the number of homes that you must delete.
+        # %s --> the "s" in homes if there are multiple.
+        too-many-homes: "Too many homes set. You must delete %d home%s."
+        home-not-exist: "Home does not exist."
+        no-homes-set: "No homes set."
+        home-remove-fail: "Unable to remove home data - please contact an administrator."
+        no-previous-loc: "No previous location recorded!"
+    player-msgs:
+        home-set-success: "Home successfully set"
+        home-remove-success: "Home successfully removed"
+    permission-msgs:
+        no-command-perm: "You do not have permission for this command."
+        no-interdimensional-perm: "You do not have permission for interdimensional homes."
+    file-errors:
+        home-set-error: "Unable to save home - please contact an administrator."
+        corrupt-home-data: "Home data corrupted - please contact an adminstrator."
+        last-location-save-error: "Unable to save last location - please contact an administrator."
+    command-msgs:
+        delhome:
+            description: "Deletes an existing home from record"
+        goback:
+            description: "Go back to the last location you were before your last /home command"
+        home:
+            description: "Teleport to a specified home point"
+        sethome:
+            description: "Records current location as a home"
+        listhomes:
+            description: "List homes of specific player"
+        homeinfo:
+            description: "Lists information about a specified home"
+        htw:
+            description: "Main plugin command. See /htw help for command list."
+

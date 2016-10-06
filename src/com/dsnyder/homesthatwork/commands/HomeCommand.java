@@ -4,13 +4,14 @@ import java.util.Collections;
 import java.util.List;
 
 import com.dsnyder.homesthatwork.HomeManager;
+import com.dsnyder.homesthatwork.MessageManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 public class HomeCommand extends GenericCommand {
 
 	public HomeCommand() {
-		super("home", "Teleport to a specified home point", "/home [home_name]", "homesthatwork.home.use");
+		super("home", MessageManager.getMsg( "help-home" ), "/home [home_name]", "homesthatwork.home.use");
 		// TODO Auto-generated constructor stub
 	}
 

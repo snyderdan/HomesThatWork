@@ -3,13 +3,14 @@ package com.dsnyder.homesthatwork.commands;
 import java.util.List;
 
 import com.dsnyder.homesthatwork.HomeManager;
+import com.dsnyder.homesthatwork.MessageManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 public class SetHomeCommand extends GenericCommand {
 
 	public SetHomeCommand() {
-		super("sethome", "Records current location as a home", "/sethome [home_name]", "homesthatwork.home.set");
+		super("sethome", MessageManager.getMsg( "help-sethome" ), "/sethome [home_name]", "homesthatwork.home.set");
 		// TODO Auto-generated constructor stub
 	}
 

@@ -3,6 +3,7 @@ package com.dsnyder.homesthatwork.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.dsnyder.homesthatwork.MessageManager;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -12,7 +13,7 @@ import com.dsnyder.homesthatwork.WorkingHomes;
 public class HTWCommand extends GenericCommand {
 
 	public HTWCommand() {
-		super("homesthatwork", "Main plugin command. See /htw help for command list.", "/htw [version | help [command]]", "homesthatwork.command.main");
+		super("homesthatwork", MessageManager.getMsg( "help-htw" ), "/htw [version | help [command]]", "homesthatwork.command.main");
 		// TODO Auto-generated constructor stub
 	}
 

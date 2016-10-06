@@ -2,6 +2,7 @@ package com.dsnyder.homesthatwork.commands;
 
 import java.util.List;
 
+import com.dsnyder.homesthatwork.MessageManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -13,7 +14,7 @@ import com.dsnyder.homesthatwork.permissions.PermissionManager;
 public class ListHomesCommand extends GenericCommand {
 
 	public ListHomesCommand() {
-		super("listhomes", "List homes of specific player", "/listhomes [player]", "homesthatwork.home.list");
+		super("listhomes", MessageManager.getMsg( "help-listhomes" ), "/listhomes [player]", "homesthatwork.home.list");
 		// TODO Auto-generated constructor stub
 	}
 

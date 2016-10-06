@@ -2,13 +2,14 @@ package com.dsnyder.homesthatwork.commands;
 
 import java.util.List;
 
+import com.dsnyder.homesthatwork.MessageManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 public class GoBackCommand extends GenericCommand {
 
 	public GoBackCommand() {
-		super("goback", "Go back to the last location you were before your last /home command", "/goback", "homesthatwork.goback");
+		super("goback", MessageManager.getMsg( "help-goback" ), "/goback", "homesthatwork.goback");
 		// TODO Auto-generated constructor stub
 	}
 

@@ -4,13 +4,14 @@ import java.util.Collections;
 import java.util.List;
 
 import com.dsnyder.homesthatwork.HomeManager;
+import com.dsnyder.homesthatwork.MessageManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 public class DelHomeCommand extends GenericCommand {
 
 	public DelHomeCommand() {
-		super("delhome", "Deletes an existing home from record", "/delhome <home_name>", "homesthatwork.home.del");
+		super("delhome", MessageManager.getMsg( "help-delhome" ), "/delhome <home_name>", "homesthatwork.home.del");
 		// TODO Auto-generated constructor stub
 	}
 

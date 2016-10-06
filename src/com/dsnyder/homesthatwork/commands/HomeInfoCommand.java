@@ -3,6 +3,7 @@ package com.dsnyder.homesthatwork.commands;
 import java.util.Collections;
 import java.util.List;
 
+import com.dsnyder.homesthatwork.MessageManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
@@ -15,7 +16,7 @@ import com.dsnyder.homesthatwork.permissions.PermissionManager;
 public class HomeInfoCommand extends GenericCommand {
 
 	public HomeInfoCommand() {
-		super("homeinfo", "Lists information about a specified home", "/homeinfo [player] <home_name>", "homesthatwork.home.info");
+		super("homeinfo", MessageManager.getMsg( "help-homeinfo" ), "/homeinfo [player] <home_name>", "homesthatwork.home.info");
 		// TODO Auto-generated constructor stub
 	}
 

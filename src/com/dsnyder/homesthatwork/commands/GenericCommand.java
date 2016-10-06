@@ -1,5 +1,6 @@
 package com.dsnyder.homesthatwork.commands;
 
+import com.dsnyder.homesthatwork.MessageManager;
 import org.bukkit.ChatColor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
@@ -69,7 +70,7 @@ public abstract class GenericCommand implements TabExecutor {
 		if (permission == null || PermissionManager.getManager().hasPermission(sender, getPermission())) {
 			return execute(sender, args);
 		} else {
-			sender.sendMessage(ChatColor.RED + "You do not have permission for this command.");
+			sender.sendMessage(ChatColor.RED + MessageManager.getMsg("no-command-perm"));
 			return true;
 		}
 	}
