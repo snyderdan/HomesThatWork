@@ -26,7 +26,7 @@ public class WorkingHomes extends JavaPlugin {
 
 	public String getStringConfig()
 	{
-		return WorkingHomes.getPlugin().getDataFolder().getPath() + File.separator + "strings.yml";
+		return WorkingHomes.getPlugin().getDataFolder().getPath() + File.separator + "config.yml";
 	}
 
 	@Override
@@ -36,4 +36,6 @@ public class WorkingHomes extends JavaPlugin {
 	public static JavaPlugin getPlugin() {
 		return main;
 	}
+
+
 }

@@ -37,8 +37,8 @@ public class HomeInfoCommand extends GenericCommand {
 			for (OfflinePlayer p : Bukkit.getOfflinePlayers()) {
 				if (p.getName().equalsIgnoreCase(arg3[0])) {
 					if (!p.isOnline())
-						arg0.sendMessage(ChatColor.YELLOW + "Offline: Last known player named " + arg3[0]);
-					
+
+						arg0.sendMessage( MessageManager.getPfx() + MessageManager.getMsg( "offline-player" ).replace( "%arg1%", arg3[0]) );
 					HomeManager other = new HomeManager(p);
 					
 					homes = other.getHomeList();
@@ -89,16 +89,18 @@ public class HomeInfoCommand extends GenericCommand {
     			for (OfflinePlayer p : Bukkit.getOfflinePlayers()) {
     				if (p.getName().equalsIgnoreCase(args[0])) {
     					if (!p.isOnline())
-    						sender.sendMessage(ChatColor.YELLOW + "Offline: Last known player named " + args[0]);
+							// Prefix + neutral message, replacing %arg1% with the playername.
+    						sender.sendMessage(MessageManager.getPfx() + MessageManager.getMsg( "offline-player" ).replace( "%arg1%", args[0]) );
     					homeManager.homeInfo(p, args[1]);
     					return true;
     				}
     			}
     			
-    			sender.sendMessage(ChatColor.RED + "Player does not exist");
+    			sender.sendMessage(MessageManager.getErrorMsg( "invalid-player" ));
+
     		}
 		} else if (args.length == 2) {
-			sender.sendMessage(ChatColor.RED + "You do not have permission to view other players' information.");
+			sender.sendMessage( MessageManager.getErrorMsg( "no-perm-others" ));
 		} else {
 			// invalid number of args
 			return false;
