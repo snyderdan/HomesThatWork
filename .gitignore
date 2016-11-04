@@ -33,6 +33,8 @@ $RECYCLE.BIN/
 
 # IDE folders
 .idea/
+output/
+HomesThatWork.iml
 
 # Files that might appear in the root of a volume
 .DocumentRevisions-V100

@@ -1,6 +1,14 @@
-# HomesThatWork Custom Messages File
+# HomesThatWork Custom Messages and Configuration File
 messages:
     prefix: "&7[&cHomesThatWork&7]"
+    # not-a-command-error is for /htw help only.
+    # Does not display a message for general invalid commands.
+    not-a-command-error:  "That is not a vaild HTW Command."
+    invalid-subcommand: "That is not a valid subcommand!"
+    admin-errors:
+        offline: "Given Player is Offline: Last known player named %arg1%: "
+        invalid-player: "That player does not exist."
+        noperm: "You do not have permission to view other players' information."
     player-errors:
         max-homes-set:  "Maxmium number of homes set."
         home-already-exists: "Home already exists."
@@ -35,6 +43,8 @@ messages:
             description: "List homes of specific player"
         homeinfo:
             description: "Lists information about a specified home"
+        htw-reload:
+            description: "Reloads the HomesThatWork configuration file"
+            success: "The HomesThatWork configuration file was reloaded!"
         htw:
-            description: "Main plugin command. See /htw help for command list."
-
+            description: "Main plugin command. See /htw help for command list"
