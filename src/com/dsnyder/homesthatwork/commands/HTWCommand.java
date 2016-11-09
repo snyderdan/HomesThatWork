@@ -64,7 +64,7 @@ public class HTWCommand extends GenericCommand {
 			sender.sendMessage(getHelp());
 		} else if (args[0].equalsIgnoreCase("help")) {
 			
-			String help = "";
+			String help = "===== HomesThatWork Help =====\n\n";
 			
 			if (args.length == 1) {
 				for (GenericCommand cmd : CommandManager.getManager().getCommands()) {
@@ -78,7 +78,7 @@ public class HTWCommand extends GenericCommand {
 					}
 				}
 				
-				sender.sendMessage(ChatColor.RED + "Not a HTW Command.");
+				sender.sendMessage( MessageManager.getErrorMsg( "not-a-command" ));
 			} else {
 				return false;
 			}
@@ -87,7 +87,7 @@ public class HTWCommand extends GenericCommand {
 		} else if (args[0].equalsIgnoreCase("version")) {
 			sender.sendMessage("HomesThatWork Version " + WorkingHomes.CURRENT_VERSION);
 		} else {
-			sender.sendMessage(ChatColor.RED + "Invalid subcommand.");
+			sender.sendMessage( MessageManager.getErrorMsg( "not-a-subcommand" ) );
 		}
 		
 		return true;

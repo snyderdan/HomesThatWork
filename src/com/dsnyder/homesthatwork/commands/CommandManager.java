@@ -22,7 +22,10 @@ public class CommandManager {
 		registerCommand(new ListHomesCommand());
 		registerCommand(new HomeInfoCommand());
 		registerCommand(new GoBackCommand());
+		registerCommand(new ReloadCommand());
 		registerCommand(new HTWCommand());
+
+
 	}
 	
 	public void registerCommand(GenericCommand cmd) {
