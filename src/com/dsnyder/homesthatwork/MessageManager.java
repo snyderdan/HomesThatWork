@@ -147,8 +147,7 @@ public class MessageManager {
         configMsgs.put( "help-homeinfo", getConfigMsg( "messages.command-msgs.homeinfo.description" ) );
         configMsgs.put( "help-htw", getConfigMsg( "messages.command-msgs.htw.description" ) );
         configMsgs.put( "help-reload", getConfigMsg( "messages.command-msgs.htw-reload.description"));
-        configMsgs.put( "reload-success", getConfigMsg( "messages.command-msgs.htw-reload.success" ) );
-        configMsgs.put( "reload-failure", getConfigMsg( "messages.command-msgs.htw-reload.failure" ) );
+        configMsgs.put( "reloaded", getConfigMsg( "messages.command-msgs.htw-reload.success" ) );
 
 
         // Not a (sub)command errors
