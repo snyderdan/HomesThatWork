@@ -115,7 +115,7 @@ public class MessageManager {
 
         configMsgs.put( "prefix", getConfigMsg( "messages.prefix" ) );
 
-        // Player Errors
+        // Player errors
         configMsgs.put( "max-homes-set", getConfigMsg( "messages.player-errors.max-homes-set" ) );
         configMsgs.put( "home-exists", getConfigMsg( "messages.player-errors.home-already-exists" ) );
         configMsgs.put( "too-many-homes", getConfigMsg( "messages.player-errors.too-many-homes" ) );
@@ -123,12 +123,15 @@ public class MessageManager {
         configMsgs.put( "no-homes-set", getConfigMsg( "messages.player-errors.no-homes-set" ) );
         configMsgs.put( "home-rem-error", getConfigMsg( "messages.player-errors.home-remove-fail" ) );
         configMsgs.put( "no-prev-loc", getConfigMsg( "messages.player-errors.no-previous-loc" ) );
+
         // General player messages
         configMsgs.put( "home-set", getConfigMsg( "messages.player-msgs.home-set-success" ) );
         configMsgs.put( "home-removed", getConfigMsg( "messages.player-msgs.home-remove-success" ) );
+
         // Permission errors
         configMsgs.put( "no-command-perm", getConfigMsg("messages.permission-msgs.no-command-perm" ));
         configMsgs.put( "no-inter-perm", getConfigMsg( "messages.permission-msgs.no-interdimensional-perm" ) );
+
         // File Errors
         configMsgs.put( "sethome-error", getConfigMsg( "messages.file-errors.home-set-error" ) );
         configMsgs.put( "corrupt-data", getConfigMsg( "messages.file-errors.corrupt-home-data") );
@@ -144,7 +147,8 @@ public class MessageManager {
         configMsgs.put( "help-homeinfo", getConfigMsg( "messages.command-msgs.homeinfo.description" ) );
         configMsgs.put( "help-htw", getConfigMsg( "messages.command-msgs.htw.description" ) );
         configMsgs.put( "help-reload", getConfigMsg( "messages.command-msgs.htw-reload.description"));
-        configMsgs.put( "reloaded", getConfigMsg( "messages.command-msgs.htw-reload.success" ) );
+        configMsgs.put( "reload-success", getConfigMsg( "messages.command-msgs.htw-reload.success" ) );
+        configMsgs.put( "reload-failure", getConfigMsg( "messages.command-msgs.htw-reload.failure" ) );
 
 
         // Not a (sub)command errors
