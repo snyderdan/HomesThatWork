@@ -36,7 +36,7 @@ public class ListHomesCommand extends GenericCommand {
     			// sort through offline players
     			for (OfflinePlayer p : Bukkit.getOfflinePlayers()) {
     				if (p.getName().equalsIgnoreCase(args[0])) {
-    					sender.sendMessage( MessageManager.getPfx() + MessageManager.getMsg( "offline-player" ).replace( "%arg1% ", args[0]));
+    					sender.sendMessage( MessageManager.getInfoMsg( "offline-player" ).replace( "%arg1% ", args[0]));
     					homeManager.listHomes(p);
     					return true;
     				}

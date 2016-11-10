@@ -67,7 +67,7 @@ public abstract class GenericCommand implements TabExecutor {
 		
 		if (homeManager == null) return false;
 		
-		if (permission == null || PermissionManager.getManager().hasPermission(sender, getPermission())) {
+		if (getPermission() == null || PermissionManager.getManager().hasPermission(sender, getPermission())) {
 			return execute(sender, args);
 		} else {
 			sender.sendMessage(MessageManager.getErrorMsg("no-command-perm"));

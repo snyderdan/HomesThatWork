@@ -38,7 +38,7 @@ public class HomeInfoCommand extends GenericCommand {
 				if (p.getName().equalsIgnoreCase(arg3[0])) {
 					if (!p.isOnline())
 
-						arg0.sendMessage( MessageManager.getPfx() + MessageManager.getMsg( "offline-player" ).replace( "%arg1%", arg3[0]) );
+						arg0.sendMessage( MessageManager.getInfoMsg( "offline-player" ).replace( "%arg1%", arg3[0]) );
 					HomeManager other = new HomeManager(p);
 					
 					homes = other.getHomeList();
@@ -90,7 +90,7 @@ public class HomeInfoCommand extends GenericCommand {
     				if (p.getName().equalsIgnoreCase(args[0])) {
     					if (!p.isOnline())
 							// Prefix + neutral message, replacing %arg1% with the playername.
-    						sender.sendMessage(MessageManager.getPfx() + MessageManager.getMsg( "offline-player" ).replace( "%arg1%", args[0]) );
+    						sender.sendMessage(MessageManager.getInfoMsg( "offline-player" ).replace( "%arg1%", args[0]) );
     					homeManager.homeInfo(p, args[1]);
     					return true;
     				}

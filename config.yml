@@ -36,11 +36,11 @@ messages:
         goback:
             description: "Go back to the last location you were before your last /home command"
         home:
-            description: "Teleport to a specified home point"
+            description: "Teleport to a specified home point. If no home is specified, the default is used (see '/sethome')"
         sethome:
-            description: "Records current location as a home"
+            description: "Assigns current location to home name. If no name is specified, then the current location is set as the default home"
         listhomes:
-            description: "List homes of specific player"
+            description: "Lists homes of a specified player"
         homeinfo:
             description: "Lists information about a specified home"
         htw-reload:

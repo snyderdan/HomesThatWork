@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.dsnyder.homesthatwork.MessageManager;
-import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
@@ -23,35 +22,37 @@ public class HTWCommand extends GenericCommand {
 		List<String> list = new ArrayList<>();
 		list.add("help");
 		list.add("version");
-		
-		if (arg3.length == 0) return list;
-		
-		if (arg3.length == 1) {
+
+		if (arg3.length == 0) return null; // shouldn't happen?
+		else if (arg3.length == 1) return list;
+		else if (arg3.length == 2) {
 			if (arg3[0].equalsIgnoreCase("help")) {
+				// if we have the full help command
 				list = new ArrayList<>();
 				for (GenericCommand cmd : CommandManager.getManager().getCommands()) {
 					list.add(cmd.getName());
 				}
-			} else {
-				for (String cmd : list) {
-					if (!cmd.toLowerCase().startsWith(arg3[1].toLowerCase())) {
-						list.remove(cmd);
-					}
+				return list;
+			}
+			// if not, then try to complete if possible
+			for (String n : list) {
+				if (!n.toLowerCase().startsWith(arg3[1])) {
+					list.remove(n);
 				}
 			}
-			
 			return list;
-		} else if (arg3.length == 2 && arg3[1].equalsIgnoreCase("help")) {
+		} else if (arg3.length == 3 && arg3[0].equalsIgnoreCase("help")) {
+			// if we are in the help command, try to complete
 			list = new ArrayList<>();
 			for (GenericCommand cmd : CommandManager.getManager().getCommands()) {
 				list.add(cmd.getName());
 			}
-			
-			for (String cmd : list) {
-				if (!cmd.toLowerCase().startsWith(arg3[2].toLowerCase())) {
-					list.remove(cmd);
+			for (String n : list) {
+				if (!n.toLowerCase().startsWith(arg3[1])) {
+					list.remove(n);
 				}
 			}
+			return list;
 		}
 			
 		return null;

@@ -32,7 +32,7 @@ public class PermissionManager {
 				return true;
 			}
 		}
-		
+
 		return false;
 	}
 	

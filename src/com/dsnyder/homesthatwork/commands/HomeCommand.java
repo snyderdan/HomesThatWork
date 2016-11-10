@@ -12,12 +12,10 @@ public class HomeCommand extends GenericCommand {
 
 	public HomeCommand() {
 		super("home", MessageManager.getMsg( "help-home" ), "/home [home_name]", "homesthatwork.home.use");
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public List<String> onTabComplete(CommandSender arg0, Command arg1, String arg2, String[] arg3) {
-		// TODO Auto-generated method stub
 		initializeHomeManager(arg0);
 		if (homeManager == null) return null;
 		
@@ -42,7 +40,6 @@ public class HomeCommand extends GenericCommand {
 	
 	@Override
 	protected boolean execute(CommandSender sender, String[] args) {
-		// TODO Auto-generated method stub
 		if (args.length == 0) args = new String[] {HomeManager.DEFAULT_LOCATION};
 		if (args.length != 1) return false;
 		homeManager.goHome(args[0]);

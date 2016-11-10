@@ -1,10 +1,9 @@
 package com.dsnyder.homesthatwork;
 
-import net.md_5.bungee.api.ChatColor;
-import org.bukkit.Bukkit;
+
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-import java.io.File;
 import java.util.HashMap;
 
 public class MessageManager {
@@ -34,6 +33,11 @@ public class MessageManager {
         return configMsgs.get( key );
 
     }
+
+    public static String getInfoMsg( String key ) {
+        return getPfx() + ChatColor.GRAY + configMsgs.get( key );
+    }
+
     public static String getErrorMsg( String key )
     {
 

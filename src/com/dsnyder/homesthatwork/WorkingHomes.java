@@ -36,6 +36,4 @@ public class WorkingHomes extends JavaPlugin {
 	public static JavaPlugin getPlugin() {
 		return main;
 	}
-
-
 }

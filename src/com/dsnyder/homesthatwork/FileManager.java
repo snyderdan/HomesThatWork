@@ -1,18 +1,14 @@
 package com.dsnyder.homesthatwork;
 
-import com.sun.xml.internal.ws.api.pipe.FiberContextSwitchInterceptor;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.error.YAMLException;
 
 import java.io.File;
 import java.io.IOException;
 
-import static org.apache.commons.io.FileUtils.getFile;
 import static org.apache.commons.io.FileUtils.moveFile;
-import static org.apache.commons.io.FileUtils.openInputStream;
 
 /**
  *
@@ -40,7 +36,6 @@ public class FileManager {
         File testConf = new File(WorkingHomes.getPlugin().getDataFolder(), pl.getUniqueId() + ".yml");
         if (testConf.exists()) {
             try {
-
                 // if it is, move it to the new subdirectory called "home_data" and delete the old one
                 moveFile(testConf, new File(WorkingHomes.getPlugin().getDataFolder() + "/home_data/", pl.getUniqueId() + ".yml"));
                 testConf.delete();
@@ -101,7 +96,6 @@ public class FileManager {
             System.out.println("[HomesThatWork] A backup was made at config.yml.old");
 
         }
-
         return conf;
     }
 
@@ -120,16 +114,10 @@ public class FileManager {
 
     // Return the string config.  Used in MessageManager.java
     public static YamlConfiguration getStringConf() {
-
         return stringconf;
-
     }
 
     private void prepFiles() {
-
         checkFileStructure();
-
-
     }
-
 }
