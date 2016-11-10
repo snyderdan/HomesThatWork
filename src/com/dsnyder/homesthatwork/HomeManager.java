@@ -62,20 +62,20 @@ public class HomeManager {
 		if (curHomeCount >= getMaxHomes()) {
 			// we check for greater than in case their max homes changed
 			// we do not delete the homes however -- they can choose which homes go
-			player.sendMessage( MessageManager.getPfx() + ChatColor.RED + MessageManager.getMsg( "max-homes-set" ) );
+			player.sendMessage( MessageManager.getErrorMsg( "max-homes-set" ) );
 			return;
 		}
 		
 		if (homeExists(home)) {
-			player.sendMessage( MessageManager.getPfx() + ChatColor.RED + MessageManager.getMsg( "home-exists" ) );
+			player.sendMessage( MessageManager.getErrorMsg( "home-exists" ) );
 			return;
 		}
 		// attempt to set the home and save the configuration file
 		this.config.set(home.toLowerCase(), locationToString(player.getLocation()));
 		
-		if (!FileManager.saveHomes( (MessageManager.getPfx() + ChatColor.RED + MessageManager.getMsg( "sethome-error" )), player) ) return;
+		if (!FileManager.saveHomes( ( MessageManager.getSuccessMsg( "sethome-error" )), player) ) return;
 		// send message that it was successful
-		player.sendMessage( MessageManager.getPfx() + ChatColor.GREEN + MessageManager.getMsg( "home-set" ));
+		player.sendMessage( MessageManager.getSuccessMsg( "home-set" ) );
 		curHomeCount++;
 	}
 	
@@ -84,40 +84,39 @@ public class HomeManager {
 		// let them choose which homes they lose
 		if (curHomeCount > getMaxHomes()) {
 			int hCount = curHomeCount - getMaxHomes();
-			player.sendMessage(String.format(MessageManager.getPfx() + ChatColor.RED +
-					MessageManager.getMsg("too-many-homes"), hCount, (hCount > 1) ? "s" : ""));
+			player.sendMessage(String.format(MessageManager.getErrorMsg("too-many-homes"), hCount, (hCount > 1) ? "s" : ""));
 			return;
 
 		}
 
 		// 
 		if (!homeExists(home)) {
-			player.sendMessage( MessageManager.getPfx() + ChatColor.RED + MessageManager.getMsg( "does-not-exist" ));
+			player.sendMessage( MessageManager.getErrorMsg( "does-not-exist" ));
 			return;
 		}
 		// parse values accordingly
 		Location loc = parseLocation((String) config.get(home.toLowerCase()));
 		// go to the specified location
 		if (loc == null) {
-			player.sendMessage(MessageManager.getPfx() + ChatColor.RED + MessageManager.getMsg( "corrupt-data" ));
+			player.sendMessage( MessageManager.getErrorMsg( "corrupt-data" ));
 			return;
 		}
 		
 		if (!loc.getWorld().equals(player.getWorld())) {
 			if (!PermissionManager.getManager().hasPermission(player, PERMISSION_DIMENSIONS)) {
-				player.sendMessage(MessageManager.getPfx() + ChatColor.RED + MessageManager.getMsg( "no-inter-perm" ));
+				player.sendMessage(MessageManager.getErrorMsg( "no-inter-perm" ));
 				return;
 			}
 		}
 		this.config.set(LAST_LOCATION, locationToString(player.getLocation()));
-		FileManager.saveHomes(MessageManager.getPfx() + ChatColor.RED + MessageManager.getMsg( "loc-save-error" ), player);
+		FileManager.saveHomes(MessageManager.getErrorMsg( "loc-save-error" ), player);
 		player.teleport(loc);
 	}
 	
 	public void delHome(String home) {
 		// only reason you can't delete a home is if it doesn't exist
 		if (!homeExists(home.toLowerCase())) {
-			player.sendMessage(MessageManager.getPfx() + ChatColor.RED + MessageManager.getMsg( "does-not-exist" ));
+			player.sendMessage( MessageManager.getErrorMsg( "does-not-exist" ));
 			return;
 		}
 		
@@ -125,11 +124,11 @@ public class HomeManager {
 			// remove home - should work every time
 			this.config.set(home, null);
 			this.config.save(playerconf);
-			player.sendMessage(MessageManager.getPfx() + ChatColor.RED + MessageManager.getMsg( "home-removed" ));
+			player.sendMessage(MessageManager.getSuccessMsg( "home-removed" ));
 			curHomeCount--;
 		} catch (IOException e) {
 			e.printStackTrace();
-			player.sendMessage(MessageManager.getPfx() + ChatColor.RED + MessageManager.getMsg( "home-rem-error"));
+			player.sendMessage(MessageManager.getErrorMsg( "home-rem-error"));
 		}
 	}
 	
@@ -152,7 +151,7 @@ public class HomeManager {
 	public void goBack() {
 		
 		if (!homeExists(LAST_LOCATION)) {
-			player.sendMessage(MessageManager.getPfx() + ChatColor.RED + MessageManager.getMsg( "no-prev-loc" ));
+			player.sendMessage( MessageManager.getErrorMsg( "no-prev-loc" ));
 			return;
 		}
 		
@@ -195,7 +194,7 @@ public class HomeManager {
 	
 	private String generateHomeInfo(String home) {
 		
-		if (!homeExists(home)) return ( MessageManager.getPfx() + ChatColor.RED + MessageManager.getMsg( "does-not-exist" ) );
+		if (!homeExists(home)) return ( MessageManager.getPfx() + ChatColor.RED + MessageManager.getErrorMsg( "does-not-exist" ) );
 		
 		Location loc = parseLocation((String) this.config.get(home.toLowerCase()));
 		
@@ -215,7 +214,7 @@ public class HomeManager {
 		homes.remove(LAST_LOCATION);
 		homes.remove(WorkingHomes.VERSION_KEY);
 		
-		if (homes.isEmpty()) return ( MessageManager.getPfx() + ChatColor.RED + MessageManager.getMsg( "no-homes-set") );
+		if (homes.isEmpty()) return (MessageManager.getErrorMsg( "no-homes-set") );
 		
 		String homestr = ChatColor.LIGHT_PURPLE + "Homes: \n" + ChatColor.WHITE;
 		for (String home : homes) homestr += home + ", ";

@@ -2,6 +2,7 @@ package com.dsnyder.homesthatwork.commands;
 
 import java.util.List;
 
+import com.avaje.ebeaninternal.server.cluster.mcast.Message;
 import com.dsnyder.homesthatwork.MessageManager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -35,16 +36,16 @@ public class ListHomesCommand extends GenericCommand {
     			// sort through offline players
     			for (OfflinePlayer p : Bukkit.getOfflinePlayers()) {
     				if (p.getName().equalsIgnoreCase(args[0])) {
-    					sender.sendMessage(ChatColor.YELLOW + "Offline: Last known player named " + args[0]);
+    					sender.sendMessage( MessageManager.getPfx() + MessageManager.getMsg( "offline-player" ).replace( "%arg1% ", args[0]));
     					homeManager.listHomes(p);
     					return true;
     				}
     			}
     			
-    			sender.sendMessage(ChatColor.RED + "Player does not exist");
+    			sender.sendMessage(MessageManager.getErrorMsg( "invalid-player" ) );
     		}
 		} else if (args.length == 1) {
-			sender.sendMessage(ChatColor.RED + "You do not have permission to view other players' information.");
+			sender.sendMessage(MessageManager.getErrorMsg( "no-perm-others"));
 		} else if (args.length == 0) {
 			homeManager.listHomes();
 		} else {

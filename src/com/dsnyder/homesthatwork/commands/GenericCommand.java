@@ -47,8 +47,8 @@ public abstract class GenericCommand implements TabExecutor {
 	}
 	
 	public String getHelp() {
-		return ChatColor.GOLD + "/" + getName() + ": " + ChatColor.WHITE + 
-				getDescription() + "\n" + ChatColor.GOLD + "Usage: " + ChatColor.WHITE + getUsage();
+		return ChatColor.YELLOW + "/" + getName() + ": " + ChatColor.GRAY +
+				getDescription() + "\n" + ChatColor.YELLOW + "Usage: " + ChatColor.GRAY + getUsage();
 	}
 	
 	public void initializeHomeManager(CommandSender sender) {
@@ -59,7 +59,7 @@ public abstract class GenericCommand implements TabExecutor {
 		
 		homeManager = new HomeManager((OfflinePlayer) sender);
 	}
-	
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		
@@ -70,7 +70,7 @@ public abstract class GenericCommand implements TabExecutor {
 		if (permission == null || PermissionManager.getManager().hasPermission(sender, getPermission())) {
 			return execute(sender, args);
 		} else {
-			sender.sendMessage(ChatColor.RED + MessageManager.getMsg("no-command-perm"));
+			sender.sendMessage(MessageManager.getErrorMsg("no-command-perm"));
 			return true;
 		}
 	}
