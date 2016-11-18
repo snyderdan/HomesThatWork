@@ -10,7 +10,7 @@ import java.io.File;
 public class WorkingHomes extends JavaPlugin {
 	
 	public static final String VERSION_KEY		= "HTWVersion";
-	public static final String CURRENT_VERSION	= "2.3.0";
+	public static final String CURRENT_VERSION	= "2.3.1";
 	
 	private static JavaPlugin main;
 	

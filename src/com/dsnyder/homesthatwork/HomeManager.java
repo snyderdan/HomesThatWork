@@ -59,21 +59,21 @@ public class HomeManager {
 	
 	public void setHome(String home) {
 		// ensure this player can create more homes
-		if (curHomeCount >= getMaxHomes()) {
+		if (curHomeCount >= getMaxHomes() && !(this.config.contains(DEFAULT_LOCATION) && home.equalsIgnoreCase(DEFAULT_LOCATION))) {
 			// we check for greater than in case their max homes changed
 			// we do not delete the homes however -- they can choose which homes go
 			player.sendMessage( MessageManager.getErrorMsg( "max-homes-set" ) );
 			return;
 		}
-		
-		if (homeExists(home)) {
+
+		if (homeExists(home) && !home.equalsIgnoreCase(DEFAULT_LOCATION)) {
 			player.sendMessage( MessageManager.getErrorMsg( "home-exists" ) );
 			return;
 		}
 		// attempt to set the home and save the configuration file
 		this.config.set(home.toLowerCase(), locationToString(player.getLocation()));
 		
-		if (!FileManager.saveHomes( ( MessageManager.getSuccessMsg( "sethome-error" )), player) ) return;
+		if (!FileManager.saveHomes( ( MessageManager.getErrorMsg( "sethome-error" )), player) ) return;
 		// send message that it was successful
 		player.sendMessage( MessageManager.getSuccessMsg( "home-set" ) );
 		curHomeCount++;
